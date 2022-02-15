@@ -2,14 +2,11 @@ package com.cornershop.counterstest.counter.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cornershop.counterstest.counter.data.CounterRequestAdd
 import com.cornershop.counterstest.counter.domain.CountersInteractor
 import com.cornershop.counterstest.counter.model.Counter
-import com.cornershop.counterstest.utils.data.StateMachineEvent
 import com.cornershop.counterstest.utils.data.onError
 import com.cornershop.counterstest.utils.data.onSuccess
 import com.cornershop.counterstest.utils.ui.ScopedViewModel
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.coroutines.CoroutineDispatcher
 
 class CreateCounterViewModel(

@@ -41,12 +41,4 @@ class DataStore(val sharedPreferences: SharedPreferences) {
 
     inline fun <reified T : Any?> get(key: String, defaultValue: T): T =
         get<T>(key) ?: defaultValue
-
-    fun delete(key: String) = sharedPreferences.edit()
-        .remove(key)
-        .apply().also {
-            Timber.d("===========> DataStore")
-            Timber.d("DELETE KEY: $key")
-            Timber.d("===========> DataStore transaction with success!")
-        }
 }

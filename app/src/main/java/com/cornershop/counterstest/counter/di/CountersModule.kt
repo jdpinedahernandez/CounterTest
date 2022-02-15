@@ -39,7 +39,6 @@ fun Application.initDI() {
     }
 }
 
-
 private val appModule = module {
     single { NetworkHandler(androidApplication()) }
     single(named("baseUrl")) { BuildConfig.API_URL }
