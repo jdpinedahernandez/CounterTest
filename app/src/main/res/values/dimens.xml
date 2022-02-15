@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="welcome_logo_size">200dp</dimen>
+    <dimen name="margin_big_2">90dp</dimen>
+    <dimen name="margin_big_1">60dp</dimen>
+    <dimen name="margin_normal_1">16dp</dimen>
+    <dimen name="margin_normal_2">24dp</dimen>
+    <dimen name="margin_normal_3">32dp</dimen>
+    <dimen name="margin_min_1">8dp</dimen>
+
+    <dimen name="font_size_medium">16sp</dimen>
+    <dimen name="font_size_medium_2">18sp</dimen>
+    <dimen name="font_size_big">20sp</dimen>
+    <dimen name="font_size_bigger">22sp</dimen>
+
+    <dimen name="default_corner_radius">8dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+</resources>
