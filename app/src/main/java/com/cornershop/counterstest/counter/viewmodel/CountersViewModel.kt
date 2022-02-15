@@ -2,9 +2,9 @@ package com.cornershop.counterstest.counter.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.cornershop.counterstest.counter.data.CounterRequest
 import com.cornershop.counterstest.counter.domain.CountersInteractor
 import com.cornershop.counterstest.counter.model.Counter
+import com.cornershop.counterstest.utils.data.NetworkError
 import com.cornershop.counterstest.utils.data.onError
 import com.cornershop.counterstest.utils.data.onSuccess
 import com.cornershop.counterstest.utils.ui.ScopedViewModel
@@ -16,10 +16,8 @@ class CountersViewModel(
 ) : ScopedViewModel(uiDispatcher) {
 
     private var counters: List<Counter> = emptyList()
-    private val _warnAboutConnection = MutableLiveData<Unit>()
 
     var counterToUpdate: Counter? = null
-    val warnAboutConnection: LiveData<Unit> get() = _warnAboutConnection
 
     sealed class UiModel {
         object Loading : UiModel()
@@ -34,6 +32,7 @@ class CountersViewModel(
     val model: LiveData<UiModel> = _model
 
     fun getCounters() = launch {
+        _model.value = UiModel.Loading
         interactor.getCounters()
             .onSuccess {
                 counters = it

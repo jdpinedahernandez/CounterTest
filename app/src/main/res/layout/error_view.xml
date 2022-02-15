@@ -29,13 +29,4 @@
         android:textColor="@color/gray"
         android:textSize="@dimen/font_size_medium_2" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/errorViewButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_normal_1"
-        android:text="@string/retry"
-        android:textColor="@color/orange" />
-
 </merge>

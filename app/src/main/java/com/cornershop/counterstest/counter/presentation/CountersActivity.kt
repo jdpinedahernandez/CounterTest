@@ -21,9 +21,7 @@ import com.cornershop.counterstest.counter.viewmodel.CountersViewModel.UiModel.S
 import com.cornershop.counterstest.databinding.CountersActivityBinding
 import com.cornershop.counterstest.utils.data.NetworkError
 import com.cornershop.counterstest.utils.extensions.getString
-import com.cornershop.counterstest.utils.extensions.observe
 import com.cornershop.counterstest.utils.extensions.observeTextChange
-import com.cornershop.counterstest.utils.extensions.snackBar
 import com.cornershop.counterstest.utils.extensions.textShareIntent
 import com.cornershop.counterstest.utils.extensions.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -65,9 +63,8 @@ class CountersActivity : ScopeActivity(), CounterEntryHandler {
         search.observeTextChange(viewModel::filterByQuery)
     }
 
-    private fun setupObservers() = with(viewModel) {
+    private fun setupObservers() {
         viewModel.model.observe(this@CountersActivity, Observer(::updateUI))
-        observe(warnAboutConnection, ::warnAboutConnection)
     }
 
     private fun getCounters() {
@@ -112,15 +109,6 @@ class CountersActivity : ScopeActivity(), CounterEntryHandler {
         }
     }
 
-    private fun warnAboutConnection(unit: Unit) {
-        snackBar(R.string.connection_error_description)
-    }
-
-    private fun showError(error: Throwable, onRetry: () -> Unit) = with(binding) {
-        loading(false)
-        errorView.showError(error, onRetry)
-    }
-
     private fun showErrorAsAlert(
         error: Throwable,
         onRetry: () -> Unit,
@@ -152,7 +140,6 @@ class CountersActivity : ScopeActivity(), CounterEntryHandler {
         if (swipeRefresh.isRefreshing) {
             swipeRefresh.isRefreshing = isLoading
         } else {
-            errorView.isVisible = false
             progressLoading.isVisible = isLoading
             recyclerView.isVisible = isLoading.not()
         }
