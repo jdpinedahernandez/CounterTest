@@ -5,9 +5,11 @@ import android.content.Context
 import com.cornershop.counterstest.BuildConfig
 import com.cornershop.counterstest.counter.data.CounterInfrastructure
 import com.cornershop.counterstest.counter.data.CounterService
+import com.cornershop.counterstest.counter.data.LocalDataSource
 import com.cornershop.counterstest.counter.data.RemoteDataSource
 import com.cornershop.counterstest.counter.data.TheCountersDb
 import com.cornershop.counterstest.counter.data.TheCountersDbDataSource
+import com.cornershop.counterstest.counter.data.TheCountersDbDataStore
 import com.cornershop.counterstest.counter.domain.CountersInteractor
 import com.cornershop.counterstest.counter.presentation.CountersActivity
 import com.cornershop.counterstest.counter.presentation.CreateCounterActivity
@@ -46,9 +48,7 @@ private val appModule = module {
     single<CoroutineDispatcher> { Dispatchers.Main }
     factory<CounterService> { CounterInfrastructure(get(), get()) }
     factory<RemoteDataSource> { TheCountersDbDataSource(get(), get()) }
-}
-
-val dataModule = module {
+    factory<LocalDataSource> { TheCountersDbDataStore(get()) }
     factory {
         DataStore(
             androidApplication().getSharedPreferences(
@@ -57,6 +57,9 @@ val dataModule = module {
             )
         )
     }
+}
+
+val dataModule = module {
     factory { CounterInfrastructure(get(), get()) }
 }
 

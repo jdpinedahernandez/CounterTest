@@ -15,17 +15,17 @@ const val COUNTERS_KEY = "counter"
 
 class CounterInfrastructure(
     private val remoteDataSource: RemoteDataSource,
-    private val dataStore: DataStore
+    private val localDataSource: LocalDataSource
 ) : CounterService {
 
     override suspend fun getCounters(): ResultHandler<List<Counter>> {
         lateinit var result: ResultHandler<List<Counter>>
         remoteDataSource.getCounters()
             .onSuccess {
-                updateLocalCounters(it)
+                localDataSource.updateCounters(it)
                 result = SuccessResponse(it)
             }.onError {
-                val localData = getLocalCounters()
+                val localData = localDataSource.getCounters()
                 result =
                     if (failure == NetworkError) SuccessResponse(localData)
                     else ErrorResponse(failure)
@@ -34,20 +34,14 @@ class CounterInfrastructure(
     }
 
     override suspend fun addCounter(title: String): ResultHandler<List<Counter>> =
-        remoteDataSource.addCounter(title).onSuccess { updateLocalCounters(it) }
+        remoteDataSource.addCounter(title).onSuccess { localDataSource.updateCounters(it) }
 
     override suspend fun deleteCounter(id: String): ResultHandler<List<Counter>> =
-        remoteDataSource.deleteCounter(id).onSuccess { updateLocalCounters(it) }
+        remoteDataSource.deleteCounter(id).onSuccess { localDataSource.updateCounters(it) }
 
     override suspend fun incrementCounter(id: String): ResultHandler<List<Counter>> =
-        remoteDataSource.incrementCounter(id).onSuccess { updateLocalCounters(it) }
+        remoteDataSource.incrementCounter(id).onSuccess { localDataSource.updateCounters(it) }
 
     override suspend fun decrementCounter(id: String): ResultHandler<List<Counter>> =
-        remoteDataSource.decrementCounter(id).onSuccess { updateLocalCounters(it) }
-
-    private suspend fun updateLocalCounters(counters: List<Counter>) =
-        withContext(Dispatchers.IO) { dataStore.put(COUNTERS_KEY, counters) }
-
-    private suspend fun getLocalCounters() =
-        withContext(Dispatchers.IO) { dataStore.get<List<Counter>>(COUNTERS_KEY, listOf()) }
+        remoteDataSource.decrementCounter(id).onSuccess { localDataSource.updateCounters(it) }
 }
